@@ -5,3 +5,5 @@ venv/
 env/
 .idea/
 *.so
+note/
+.ipynb_checkpoints/
