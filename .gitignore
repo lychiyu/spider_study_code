@@ -7,3 +7,4 @@ env/
 *.so
 note/
 .ipynb_checkpoints/
+.DS_Store
