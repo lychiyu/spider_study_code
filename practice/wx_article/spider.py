@@ -4,6 +4,7 @@
  Created by liuying on 2018/9/4.
 """
 import json
+import re
 from datetime import datetime
 
 import pymongo
@@ -98,7 +99,7 @@ def parse_detail(url):
             doc = pq(detail)
             title = doc('.rich_media_title').text()
             content = doc('.rich_media_content').text()
-            pub_date = doc('#publish_time').text()
+            pub_date = re.compile(r'.*?<em id="publish_time".*?">(.*?)</em>').search(detail).group(1)
             if pub_date == '今天' or pub_date == "":
                 pub_date = datetime.now().date().strftime('%Y-%m-%d')
             nick_name = doc('#js_profile_qrcode > div > strong').text()
