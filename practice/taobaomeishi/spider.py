@@ -4,6 +4,7 @@
  Created by liuying on 2018/9/2.
 """
 import re
+from multiprocessing.pool import Pool
 from time import sleep
 
 import pymongo
@@ -90,7 +91,7 @@ def get_data(kw):
         product = {
             'kw': kw,
             'image': item.find('.pic .img').attr('src'),
-            'price': item.find('.price').text(),
+            'price': re.compile('.*?(\d+\.?\d+)', re.S).search(item.find('.price').text()).group(1),
             'deal': item.find('.deal-cnt').text()[:-3],
             'title': item.find('.title').text(),
             'shop': item.find('.shop').text(),
@@ -116,10 +117,15 @@ def main(kw):
     total = int(re.compile('(\d+)').search(total).group(1))
     for i in range(2, total + 1):
         print(f'page: {i}')
-        sleep(3)
         next_page(i, kw)
-    browser.close()
 
 
 if __name__ == '__main__':
-    main(KEYWORDS)
+    # main(KEYWORDS)
+    kws = l5.split(' ')
+    for kw in kws:
+        print(f'{kw} start')
+        main(kw)
+        print(f'{kw} end')
+    print("all end")
+
